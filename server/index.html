@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Mingle</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .cnt {
+        background-color: grey;
+        width: 500px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px;
+      }
+
+      #messages {
+        height: 200px;
+        width: 200px;
+      }
+
+      #form {
+        display: flex;
+      }
+
+      #input-msg {
+        width: 200px;
+        height: 40px;
+      }
+
+      #send-btn {
+        height: 50px;
+        width: 50px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cnt">
+      <ul id="messages"></ul>
+      <form id="form">
+        <input type="text" id="input" />
+        <button type="submit" id="send-btn">Send</button>
+      </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const input = document.getElementById("input");
+      const sendBtn = document.getElementById("send-btn");
+      const msgBox = document.getElementById("messages");
+      const form = document.getElementById("form");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("chat-msg", input.value);
+          input.value = "";
+        }
+      });
+
+      socket.on("rcv-msg", (msg) => {
+        const item = document.createElement("li");
+        item.innerHTML = msg;
+        msgBox.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+  </body>
+</html>
