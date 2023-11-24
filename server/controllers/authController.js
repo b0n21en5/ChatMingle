@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { VerifyPassword, hashPassword } from "../helpers/authHelper.js";
 import { clientError, serverError } from "../helpers/handleErrors.js";
 import userModel from "../models/userModel.js";
@@ -98,10 +99,32 @@ export const resetPasswordController = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const allUsers = await userModel.find();
+    let allUsers = await userModel.find();
+
+    const userId = req.query.uid;
+    if (userId) {
+      allUsers = allUsers.filter(
+        (user) => !user._id.equals(new mongoose.Types.ObjectId(userId))
+      );
+    }
 
     return res.status(200).send(allUsers);
   } catch (error) {
     return serverError(res, error, "Error while fetching all users!");
+  }
+};
+
+export const searchUserController = async (req, res) => {
+  try {
+    let keyword = req.params.searchQry;
+    keyword = keyword.toLowerCase();
+
+    const users = await userModel.find({
+      username: { $regex: keyword, $options: "i" },
+    });
+
+    return res.status(200).send(users);
+  } catch (error) {
+    return serverError(res, error, "Error while searching user!");
   }
 };
