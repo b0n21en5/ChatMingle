@@ -26,13 +26,23 @@ export const sendMessage = async (req, res) => {
 export const getReceivedMessages = async (req, res) => {
   try {
     const { senderId, receiverId } = req.params;
+
+    if (!senderId) {
+      return clientError(res, "Sender's Id required!");
+    }
+    if (!receiverId) {
+      return clientError(res, "Receiver's Id required!");
+    }
+
     const receivedMessage = await messageModel.find({
-      sender: senderId,
-      receiver: receiverId,
+      $or: [
+        { sender: senderId, receiver: receiverId },
+        { sender: receiverId, receiver: senderId },
+      ],
     });
 
     return res.status(200).send(receivedMessage);
   } catch (error) {
-    return serverError(res,error, "Error while fetching received messages!");
+    return serverError(res, error, "Error while fetching received messages!");
   }
 };
