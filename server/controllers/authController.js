@@ -2,10 +2,12 @@ import mongoose from "mongoose";
 import { VerifyPassword, hashPassword } from "../helpers/authHelper.js";
 import { clientError, serverError } from "../helpers/handleErrors.js";
 import userModel from "../models/userModel.js";
+import fs from "fs";
 
 export const registerUserController = async (req, res) => {
   try {
-    const { username, email, password, answer } = req.body;
+    const { username, email, password, answer } = req.fields;
+    const { profileImg } = req.files;
 
     if (!username) {
       return clientError(res, "Username required!");
@@ -20,6 +22,10 @@ export const registerUserController = async (req, res) => {
       return clientError(res, "Password required!");
     }
 
+    if (profileImg.size > 1000000) {
+      return clientError(res, "Photo size must be less than 1 mb!");
+    }
+
     const hashedPassword = await hashPassword(password);
 
     const existingUser = await userModel.findOne({ email: email });
@@ -28,9 +34,16 @@ export const registerUserController = async (req, res) => {
     }
 
     const newUser = await new userModel({
-      ...req.body,
+      ...req.fields,
       password: hashedPassword,
-    }).save();
+    });
+
+    if (profileImg) {
+      newUser.profileImg.data = fs.readFileSync(profileImg.path);
+      newUser.profileImg.contentType = profileImg.type;
+    }
+
+    await newUser.save();
 
     newUser.password = "******";
 
@@ -68,6 +81,18 @@ export const loginController = async (req, res) => {
     return res.status(200).send(user);
   } catch (error) {
     return serverError(res, error, "Error While trying log in!");
+  }
+};
+
+export const getProfileImage = async (req, res) => {
+  try {
+    const { profileImg } = await userModel.findById(req.params.uid);
+
+    res.contentType(profileImg.contentType);
+
+    return res.status(200).send(profileImg.data);
+  } catch (error) {
+    return serverError(res, error, "Error while fetching profile image!");
   }
 };
 
@@ -126,5 +151,47 @@ export const searchUserController = async (req, res) => {
     return res.status(200).send(users);
   } catch (error) {
     return serverError(res, error, "Error while searching user!");
+  }
+};
+
+export const updateUserController = async (req, res) => {
+  try {
+    const { email, password } = req.fields;
+    const { profileImg } = req.files;
+
+    if (!email) {
+      return clientError(res, "Email required!");
+    }
+    if (!password) {
+      return clientError(res, "Password required!");
+    }
+
+    if (profileImg.size > 1000000) {
+      return clientError(res, "Image size must be less than 1 mb!");
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email: email },
+      {
+        ...req.fields,
+        password: hashedPassword,
+      },
+      { new: true }
+    );
+
+    if (profileImg) {
+      updatedUser.profileImg.data = fs.readFileSync(profileImg.path);
+      updatedUser.profileImg.contentType = profileImg.type;
+    }
+
+    await updatedUser.save();
+
+    updatedUser.password = "******";
+
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    return serverError(res, error, "Error Registering New User!");
   }
 };

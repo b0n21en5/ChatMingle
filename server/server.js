@@ -8,7 +8,6 @@ import authRoutes from "./routes/authRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { connectDB } from "./helpers/connectDB.js";
 import cors from "cors";
-import bodyParser from "express";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,7 +17,9 @@ const app = express();
 connectDB();
 
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: { origin: "http://localhost:5173", credentials: true },
+});
 
 // Middlewares
 app.use(cors());
@@ -30,15 +31,27 @@ app.use("/api/v1/messages", messageRoutes);
 
 // app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 
-io.on("connection", (socket) => {
-  console.log("user connected");
+global.onlineUsers = new Map();
 
-  socket.on("chat-msg", (msg) => {
-    socket.broadcast.emit("rcv-msg", msg);
+io.on("connection", (socket) => {
+  socket.emit("online-users", Object.fromEntries(onlineUsers));
+
+  socket.on("add-user", (userId) => {
+    // storing socket id as value so later will connect to it
+    onlineUsers.set(userId, socket.id);
+    io.emit("online-users", Object.fromEntries(onlineUsers));
   });
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected!");
+  socket.on("remove-user", (userId) => {
+    onlineUsers.delete(userId);
+    io.emit("online-users", Object.fromEntries(onlineUsers));
+  });
+
+  socket.on("send-msg", (data) => {
+    const receiverSocketOnline = onlineUsers.get(data.receiver);
+    if (receiverSocketOnline) {
+      socket.to(receiverSocketOnline).emit("rcv-msg", data);
+    }
   });
 });
 
