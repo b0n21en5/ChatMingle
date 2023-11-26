@@ -1,0 +1,98 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(157, 211, 146);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authCnt {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  width: 80vw;
+  height: 88vh;
+  background-color: #fff;
+  padding: 20px;
+  padding-top: 10px;
+  padding-left: 60px;
+}
+
+.main .authCnt .leaf {
+  position: absolute;
+  left: 90px;
+  bottom: 20px;
+}
+
+.authCnt .formCnt {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  color: grey;
+  width: 30vw;
+  background-color: #fff;
+  /* height: 500px; */
+}
+
+.formCnt .heading {
+  display: flex;
+  align-items: center;
+}
+
+.heading h1 {
+  margin: 1rem 0;
+}
+
+.formCnt input {
+  color: green;
+  width: 350px;
+  font-size: 1.1rem;
+  padding: 5px 1rem;
+  border-radius: 1rem 1rem 0;
+  margin-top: 5px;
+  border: 1px solid rgb(157, 211, 146);
+}
+
+.formCnt input:focus {
+  outline: none;
+}
+
+.formCnt .btnSec {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formCnt .btnSec .submitBtn {
+  font-size: 1rem;
+  color: #fff;
+  background-color: rgb(6, 57, 6);
+  width: 384px;
+  height: 30px;
+  border: none;
+  border-radius: 1rem 1rem 0;
+  padding: 1rem;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnSec a {
+  font-weight: 600;
+  color: rgb(6, 57, 6);
+}
+
+/* Styles for right side of auth page */
+
+.authCnt .right {
+  width: 30vw;
+}
+
+.right img {
+  border-radius: 18px 18px 18px 0;
+}

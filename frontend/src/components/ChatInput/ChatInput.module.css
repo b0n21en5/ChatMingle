@@ -1,0 +1,49 @@
+.sendMessage {
+  padding: 0.3rem 1.5rem;
+  height: 52px;
+  min-width: 726px;
+  background-color: #202c33;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.sendMessage .emoji {
+  color: #8696a0;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.sendMessage input {
+  color: #d1d7db;
+  font-size: 1rem;
+  width: 80%;
+  max-height: 40px;
+  padding: 0.55rem 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #2a3942;
+}
+
+.sendMessage input:focus {
+  outline: none;
+}
+
+.sendMessage input::placeholder {
+  color: #79868f;
+}
+
+.sendMessage .submit {
+  background-color: #202c33;
+  border: none;
+}
+
+.sendMessage svg {
+  color: #8696a0;
+  font-size: 1.8rem;
+  cursor: pointer;
+}

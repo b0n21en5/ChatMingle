@@ -1,0 +1,59 @@
+.userDet {
+  height: 72px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+
+.userDet:hover {
+  background-color: rgb(30, 40, 46);
+}
+
+.userDet .imgCnt {
+  height: 100%;
+  padding: 0 15px 0 13px;
+  display: flex;
+  align-items: center;
+}
+
+.userDet .imgCnt img {
+  border-radius: 50%;
+  background-color: #fff;
+  object-fit: cover;
+}
+
+.userDet .userName {
+  font-size: 18px;
+  height: 100%;
+  width: 100%;
+  border-bottom: 0.1px solid rgba(134, 150, 160, 0.15);
+  line-height: 1.5rem;
+
+  display: flex;
+  flex-basis: auto;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 0;
+}
+
+.userName .latestMsg {
+  font-size: 0.88rem;
+  color: #8696a0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.userActive {
+  background-color: #2a3942 !important;
+}
+
+.userActive .latestMsg {
+  color: #d1d7db;
+}
+
+.latestMsg svg{
+  font-size: 1.5rem;
+}

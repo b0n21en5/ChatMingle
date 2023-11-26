@@ -1,0 +1,80 @@
+header {
+  height: 50px;
+  width: 473px;
+  max-height: 40px;
+  padding: 10px 1rem;
+  background-color: #202c33;
+  border-right: 1px solid rgba(134, 150, 160, 0.15);
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+header img {
+  border-radius: 50%;
+  background-color: #fff;
+  object-fit: cover;
+}
+
+header .currentUser {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.currentUser .currentUsername {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.currentUser .userStatus {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #4caf50;
+}
+
+.userStatus .off {
+  color: #8696a0;
+}
+
+header svg {
+  font-size: 1.5rem;
+  color: #aebac1;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+header .moreAct {
+  border-radius: 50%;
+  background-color: hsla(0, 0%, 100%, 0.1);
+}
+
+.svgCnt {
+  max-width: 240px;
+  display: flex;
+  gap: 10px;
+}
+
+.svgCnt .videoCall {
+  height: 25px;
+  padding: 5px 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.videoCall:hover {
+  background-color: rgba(84, 101, 111, 0.317);
+}
+
+.videoCall svg {
+  color: #54656f;
+  font-size: 1.1rem;
+  padding: 0;
+}
