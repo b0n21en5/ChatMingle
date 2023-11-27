@@ -13,11 +13,11 @@ import formidableMiddleware from "express-formidable";
 const router = express.Router();
 
 router.post("/register-user", formidableMiddleware(), registerUserController);
-router.post("/update-user", formidableMiddleware(), updateUserController);
+router.put("/update-user", formidableMiddleware(), updateUserController);
 
 router.post("/login", loginController);
 
-router.post("/reset-password", resetPasswordController);
+router.put("/reset-password", resetPasswordController);
 
 router.get("/user/profile-image/:uid", getProfileImage);
 
