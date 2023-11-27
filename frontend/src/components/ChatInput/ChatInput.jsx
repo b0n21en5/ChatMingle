@@ -22,7 +22,6 @@ const ChatInput = ({ handleSendMessage, messages, setMessages }) => {
           setMessages((p) => ({ ...p, sendText: e.target.value }))
         }
         value={messages.sendText}
-        autoFocus
       />
       <button className={styles.submit}>
         <IoMdSend type="submit" />

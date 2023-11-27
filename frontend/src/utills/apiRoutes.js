@@ -1,7 +1,9 @@
-export const host = `http://localhost:8080`;
+export const host =
+  process.env.NODE_ENV === "production"
+    ? `https://chatmingle-production.up.railway.app`
+    : `http://localhost:8080`;
 
-export const socketURL =
-  process.env.NODE_ENV === "production" ? undefined : host;
+export const socketURL = host;
 
 // user routes
 export const registerUserRoute = `${host}/api/v1/auth/register-user`;
