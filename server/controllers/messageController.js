@@ -46,3 +46,28 @@ export const getReceivedMessages = async (req, res) => {
     return serverError(res, error, "Error while fetching received messages!");
   }
 };
+
+
+export const getLatestMessage = async (req, res) => {
+  try {
+    const { senderId, receiverId } = req.params;
+
+    if (!senderId) {
+      return clientError(res, "Sender's Id required!");
+    }
+    if (!receiverId) {
+      return clientError(res, "Receiver's Id required!");
+    }
+
+    const latestMessage = await messageModel.find({
+      $or: [
+        { sender: senderId, receiver: receiverId },
+        { sender: receiverId, receiver: senderId },
+      ],
+    }).sort({createdAt:-1});
+
+    return res.status(200).send(latestMessage[0]);
+  } catch (error) {
+    return serverError(res, error, "Error while fetching latest message!");
+  }
+};

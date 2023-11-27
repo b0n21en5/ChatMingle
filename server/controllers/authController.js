@@ -22,7 +22,7 @@ export const registerUserController = async (req, res) => {
       return clientError(res, "Password required!");
     }
 
-    if (profileImg.size > 1000000) {
+    if (profileImg && profileImg.size > 1000000) {
       return clientError(res, "Photo size must be less than 1 mb!");
     }
 
@@ -38,7 +38,7 @@ export const registerUserController = async (req, res) => {
       password: hashedPassword,
     });
 
-    if (profileImg) {
+    if (profileImg !== undefined) {
       newUser.profileImg.data = fs.readFileSync(profileImg.path);
       newUser.profileImg.contentType = profileImg.type;
     }
@@ -64,7 +64,12 @@ export const loginController = async (req, res) => {
       return clientError(res, "Invalid Password!");
     }
 
-    const args = { $or: [{ username: username }, { email: email }] };
+    const args = {
+      $or: [
+        { username: { $regex: username, $options: "i" } },
+        { email: email },
+      ],
+    };
 
     const user = await userModel.findOne(args);
     if (!user) {
@@ -105,18 +110,21 @@ export const resetPasswordController = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = await userModel.findOneAndUpdate(
-      { email: email },
-      { password: hashedPassword },
-      { new: true }
-    );
-    if (!user) {
+    const userExist = await userModel.findOne({ email: email });
+    if (!userExist) {
       return clientError(res, `No user with ${email}`);
     }
 
-    user.password = "******";
+    if (userExist.answer !== answer) {
+      return clientError(res, "Wrong answer!");
+    }
 
-    return res.status(200).send(user);
+    userExist.password = hashedPassword;
+    await userExist.save();
+
+    userExist.password = "******";
+
+    return res.status(200).send(userExist);
   } catch (error) {
     return serverError(rs, error, "Error While reset password!");
   }
@@ -162,15 +170,15 @@ export const updateUserController = async (req, res) => {
     if (!email) {
       return clientError(res, "Email required!");
     }
-    if (!password) {
-      return clientError(res, "Password required!");
-    }
 
-    if (profileImg.size > 1000000) {
+    if (profileImg && profileImg.size > 1000000) {
       return clientError(res, "Image size must be less than 1 mb!");
     }
 
-    const hashedPassword = await hashPassword(password);
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await hashPassword(password);
+    }
 
     const updatedUser = await userModel.findOneAndUpdate(
       { email: email },
@@ -181,7 +189,7 @@ export const updateUserController = async (req, res) => {
       { new: true }
     );
 
-    if (profileImg) {
+    if (profileImg !== undefined) {
       updatedUser.profileImg.data = fs.readFileSync(profileImg.path);
       updatedUser.profileImg.contentType = profileImg.type;
     }
@@ -192,6 +200,6 @@ export const updateUserController = async (req, res) => {
 
     return res.status(200).send(updatedUser);
   } catch (error) {
-    return serverError(res, error, "Error Registering New User!");
+    return serverError(res, error, "Error Updating User!");
   }
 };
