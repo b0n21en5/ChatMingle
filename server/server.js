@@ -17,7 +17,7 @@ const io = new Server(httpServer, {
   cors: {
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://chat-mingle-web.netlify.app/"
+        ? "https://chat-mingle-web.netlify.app"
         : "http://localhost:5173",
 
     credentials: true,
