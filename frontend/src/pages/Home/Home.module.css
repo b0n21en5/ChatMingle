@@ -148,8 +148,78 @@
   margin-left: 10px;
 }
 
+.rightCnt .receivedChats .message .readMore {
+  color: #53bdeb;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
 .rightCnt .receivedChats .myMessage {
   background-color: #005c4b;
   align-self: flex-end;
   border-radius: 0.5rem 0.5rem 0 0.5rem;
+}
+
+/* Mobile Responsiveness - 430px */
+@media screen and (max-width: 430px) {
+  .chatCnt .leftCnt {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+  }
+
+  .searchSec {
+    display: none;
+  }
+
+  .scrollableCnt {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    top: 60px;
+  }
+
+  .chatCnt .rightCnt::before {
+    left: 0;
+    min-width: 100%;
+    background-color: #111b21;
+  }
+
+  .chatCnt .rightCnt {
+    height: 100%;
+    min-width: 92%;
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+  }
+
+  .rightCnt header {
+    width: 100%;
+  }
+
+  .rightCnt .scrollableCnt {
+    width: 100%;
+    height: 87%;
+  }
+
+  .rightCnt .receivedChats {
+    padding: 20px;
+    gap: 10px;
+  }
+
+  .rightCnt .receivedChats .message {
+    max-width: 80%;
+  }
+
+  .chatCnt .noChatBg {
+    display: none;
+  }
+
+  .chatCnt .dNon {
+    display: none;
+  }
+
+  .chatCnt .dBlok {
+    display: block;
+  }
 }

@@ -51,6 +51,7 @@ const Profile = ({ setIsVisible }) => {
         formData.append("profileImg", auth.profileImg);
       }
 
+        console.log(formData)
       const { data } = await axios.put(updateUserRoute, formData);
       if (data.username) {
         dispatch(updateUser(data));

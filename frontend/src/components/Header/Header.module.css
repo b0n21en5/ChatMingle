@@ -55,6 +55,7 @@ header .moreAct {
 .svgCnt {
   max-width: 240px;
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -77,4 +78,18 @@ header .moreAct {
   color: #54656f;
   font-size: 1.1rem;
   padding: 0;
+}
+
+/* Mobile Responsiveness - 430px */
+@media screen and (max-width: 430px) {
+  header {
+    width: 92vw;
+    color: #fff;
+  }
+
+  header svg {
+    color: #fff;
+    font-size: 1rem;
+    padding: 2px;
+  }
 }

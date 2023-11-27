@@ -96,3 +96,28 @@
 .right img {
   border-radius: 18px 18px 18px 0;
 }
+
+/* Mobile Responsivenss - 430px */
+@media screen and (max-width: 430px) {
+  .main {
+    width: 100%;
+  }
+
+  .authCnt {
+    width: 100%;
+    padding: 10px;
+    /* display: block; */
+  }
+
+  .main .authCnt .leaf{
+    display: none;
+  }
+
+  .authCnt .formCnt{
+    width: 100%;
+  }
+
+  .right {
+    display: none;
+  }
+}

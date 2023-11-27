@@ -8,12 +8,12 @@
 
 .userMenuModal {
   position: absolute;
-  left: 260px;
+  right: 780px;
   top: 55px;
   display: flex;
   flex-direction: column;
 
-  width: 228px;
+  width: 150px;
   padding: 0.5rem 0;
   color: #aebac1;
   background-color: #233138;
@@ -32,4 +32,19 @@
 
 .menuItem:hover {
   background-color: #162128c5;
+}
+
+
+/* Mobile responsiveness - 430px */
+@media screen and (max-width:430px) {
+  .userMenuModal{
+    right: 10px;
+    top: 60px;
+    /* width: 100px; */
+  }
+
+  .userMenuModal .menuItem{
+    border-bottom: 1px solid rgba(50, 50, 50, 0.6);
+  }
+  
 }

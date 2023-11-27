@@ -17,3 +17,11 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+/* Mobile Responsiveness - 430px */
+@media screen and (max-width: 430px) {
+  :root {
+    color: #000;
+    background-color: #fff;
+  }
+}

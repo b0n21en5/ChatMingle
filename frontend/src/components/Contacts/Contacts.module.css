@@ -24,7 +24,7 @@
 }
 
 .userDet .userName {
-  font-size: 18px;
+  font-size: 1.15rem;
   height: 100%;
   width: 100%;
   border-bottom: 0.1px solid rgba(134, 150, 160, 0.15);
@@ -54,6 +54,10 @@
   color: #d1d7db;
 }
 
-.latestMsg svg{
+.latestMsg svg {
   font-size: 1.5rem;
+}
+
+/* Mobile Responsivenss - 430px */
+@media screen and (max-width: 430px) {
 }

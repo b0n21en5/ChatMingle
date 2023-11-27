@@ -58,23 +58,21 @@ const Contacts = ({ allUsers, messages, setMessages }) => {
               </div>
               <div className={styles.userName}>
                 <div>{contact.username}</div>
-                <div className={styles.latestMsg}>
-                  {latestMsgs.length > 0 &&
-                    latestMsgs.map((msg) => msg.sender === contact._id) &&
-                    latestMsgs.map((msg) => {
-                      if (
-                        msg.sender === contact._id ||
-                        msg.receiver === contact._id
-                      )
-                        return (
-                          <>
-                            {msg.sender === user._id && <BiCheckDouble />}
-                            {msg.message.substr(0, 50) +
-                              (msg.message.length > 50 ? "..." : "")}
-                          </>
-                        );
-                    })}
-                </div>
+                {latestMsgs.length > 0 &&
+                  latestMsgs.map((msg) => msg.sender === contact._id) &&
+                  latestMsgs.map((msg) => {
+                    if (
+                      msg.sender === contact._id ||
+                      msg.receiver === contact._id
+                    )
+                      return (
+                        <div key={msg._id} className={styles.latestMsg}>
+                          {msg.sender === user?._id && <BiCheckDouble />}
+                          {msg.message.substr(0, 50) +
+                            (msg.message.length > 50 ? "..." : "")}
+                        </div>
+                      );
+                  })}
               </div>
             </div>
           ))
