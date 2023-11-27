@@ -117,6 +117,10 @@
     width: 100%;
   }
 
+  .formCnt input{
+    width: 90%;
+  }
+
   .right {
     display: none;
   }

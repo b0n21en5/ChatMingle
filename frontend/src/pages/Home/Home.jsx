@@ -83,7 +83,7 @@ const Home = () => {
 
     fetchAllUsers();
 
-    window.addEventListener("pagehide", () => {
+    window.addEventListener("unload", () => {
       socket.current.emit("remove-user", user?._id);
     });
   }, []);
