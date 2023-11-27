@@ -47,3 +47,16 @@
   font-size: 1.8rem;
   cursor: pointer;
 }
+
+/* Mobile Responsiveness - 430px */
+@media screen and (max-width:430px) {
+  .sendMessage{
+    min-width: 80%;
+    left: 0;
+    padding: 0.3rem .6rem;
+  }
+
+  .sendMessage input{
+    width: 70%;
+  }
+}

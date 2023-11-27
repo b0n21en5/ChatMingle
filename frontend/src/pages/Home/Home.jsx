@@ -29,12 +29,15 @@ const Home = () => {
     data: [],
     sendText: "",
     showEmoji: false,
+    readMore: 1200,
   });
   const [allUsers, setAllUsers] = useState([]);
   const [search, setSearch] = useState({ isActive: false, keyword: "" });
 
   const [isVisible, setIsVisible] = useState({ menu: false, profile: false });
   const [onlineUsers, setOnlineUsers] = useState([]);
+
+  const [mbScreen, setMbScreen] = useState(false);
 
   const messRef = useRef();
 
@@ -60,6 +63,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (window.innerWidth <= 430) {
+      setMbScreen(true);
+    } else {
+      setMbScreen(false);
+    }
+
     socket.current = io(socketURL);
 
     socket.current.emit("add-user", user?._id);
@@ -91,8 +100,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    setMessages((p) => ({ ...p, data: [], sendText: "", showEmoji: false }));
     if (messages.sender) {
+      setMessages((p) => ({
+        ...p,
+        data: [],
+        sendText: "",
+        showEmoji: false,
+        readMore: 1200,
+      }));
       fetchReceivedMessages();
     }
   }, [messages.sender]);
@@ -151,7 +166,11 @@ const Home = () => {
   return (
     <div className={styles.chatCnt}>
       {/* User / left Container*/}
-      <div className={styles.leftCnt}>
+      <div
+        className={`${styles.leftCnt} ${
+          mbScreen && messages.sender ? styles.dNon : styles.dBlok
+        }`}
+      >
         {/* User container Header */}
         <Header
           section="user"
@@ -164,19 +183,21 @@ const Home = () => {
         {isVisible.profile && <Profile setIsVisible={setIsVisible} />}
 
         {/* search users/ contacts */}
-        <div className={styles.searchSec}>
-          <div className={styles.searchBar}>
-            <IoSearch />
-            <input
-              type="text"
-              placeholder="Search for users"
-              onChange={(e) =>
-                setSearch((p) => ({ ...p, keyword: e.target.value }))
-              }
-            />
+        {!mbScreen && (
+          <div className={styles.searchSec}>
+            <div className={styles.searchBar}>
+              <IoSearch />
+              <input
+                type="text"
+                placeholder="Search for users"
+                onChange={(e) =>
+                  setSearch((p) => ({ ...p, keyword: e.target.value }))
+                }
+              />
+            </div>
+            <IoFilter />
           </div>
-          <IoFilter />
-        </div>
+        )}
 
         {/* Contacts list */}
         <div className={styles.scrollableCnt}>
@@ -192,7 +213,7 @@ const Home = () => {
       <div
         className={`${styles.rightCnt} ${
           messages.sender ? "" : styles.noMsgBg
-        }`}
+        } ${mbScreen && !messages.sender ? styles.dNon : styles.dBlok}`}
       >
         {messages.sender ? (
           <>
@@ -203,6 +224,7 @@ const Home = () => {
               setIsVisible={setIsVisible}
               user={messages.sender}
               onlineUsers={onlineUsers}
+              setMessages={setMessages}
             />
 
             {/* Messages container */}
@@ -219,7 +241,26 @@ const Home = () => {
                         key={idx}
                         ref={messRef}
                       >
-                        <span>{item.message}</span>
+                        <span>
+                          {item.message.substr(0, messages.readMore) +
+                            `${
+                              item.message.length > 1200 &&
+                              messages.readMore < 5000
+                                ? "..."
+                                : ""
+                            }`}
+                          {item.message.length > 1200 &&
+                            messages.readMore !== 5000 && (
+                              <span
+                                className={styles.readMore}
+                                onClick={() =>
+                                  setMessages((p) => ({ ...p, readMore: 5000 }))
+                                }
+                              >
+                                Read more
+                              </span>
+                            )}
+                        </span>
                         <span className={styles.time}>
                           {moment(item.createdAt).format("h:mm a")}
                         </span>
